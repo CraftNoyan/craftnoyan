@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Craft Noyan | Gelişmiş SMP Deneyimi - Kurucu: 7qraxxanw</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#03050a',
+                        cardbg: '#090e1a',
+                        cardborder: '#151d32',
+                        accent: '#8b5cf6',
+                        accenthover: '#7c3aed',
+                        neon: '#10b981',
+                        gold: '#f59e0b',
+                        danger: '#ef4444',
+                    },
+                    animation: {
+                        'float': 'float 4s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 20s linear infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Outfit', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #03050a; }
+        ::-webkit-scrollbar-thumb { background: #151d32; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-100 antialiased selection:bg-accent selection:text-white overflow-x-hidden flex flex-col min-h-screen">
+
+    <!-- 1. TOP NOTIFICATION BAR & DİL SEÇİCİ -->
+    <div class="bg-gradient-to-r from-accent via-purple-600 to-indigo-600 text-white text-xs py-2 px-4 flex items-center justify-between shadow-md relative z-50">
+        <div class="flex items-center gap-2 font-semibold mx-auto sm:mx-0">
+            <i class="fa-solid fa-bullhorn animate-bounce-slow"></i>
+            <span id="txt-banner">Craft Noyan v3.5 SMP Sezonu Aktif! Kurucu: <strong class="underline">7qraxxanw</strong></span>
+        </div>
+        <!-- Çoklu Dil Seçeneği -->
+        <div class="hidden sm:flex items-center gap-2">
+            <i class="fa-solid fa-globe text-gray-200"></i>
+            <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-darkbg/40 text-white text-xs border border-white/20 rounded-lg px-2 py-1 focus:outline-none cursor-pointer">
+                <option value="tr" selected>Türkçe (TR)</option>
+                <option value="en">English (EN)</option>
+                <option value="de">Deutsch (DE)</option>
+                <option value="az">Azərbaycan (AZ)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- 2. HEADER / NAVBAR -->
+    <header class="sticky top-0 left-0 w-full z-40 bg-darkbg/90 backdrop-blur-xl border-b border-gray-800/60 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" onclick="showPage('anasayfa')" class="text-xl font-black tracking-wider text-white flex items-center gap-3 group cursor-pointer">
+                <span class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-accent to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-accent/30 font-black text-sm tracking-tighter group-hover:scale-105 transition-transform duration-300">
+                    CN
+                </span>
+                <span class="font-heading tracking-tight">CRAFT<span class="text-accent group-hover:text-purple-400 transition-colors">NOYAN</span></span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden lg:flex items-center gap-1 font-medium text-sm bg-cardbg/90 border border-cardborder px-3 py-1.5 rounded-full shadow-inner">
+                <button onclick="showPage('anasayfa')" id="nav-anasayfa" class="nav-link px-3.5 py-2 rounded-full transition-all text-accent bg-cardbg border border-cardborder font-semibold cursor-pointer shadow-sm">Ana Sayfa</button>
+                <button onclick="showPage('magaza')" id="nav-magaza" class="nav-link px-3.5 py-2 rounded-full transition-all text-gray-300 hover:text-white cursor-pointer">Mağaza</button>
+                <button onclick="showPage('kredi')" id="nav-kredi" class="nav-link px-3.5 py-2 rounded-full transition-all text-gray-300 hover:text-white cursor-pointer">Kredi & Sandık</button>
+                <button onclick="showPage('destek')" id="nav-destek" class="nav-link px-3.5 py-2 rounded-full transition-all text-gray-300 hover:text-white cursor-pointer">Destek</button>
+                <button onclick="showPage('ekip')" id="nav-ekip" class="nav-link px-3.5 py-2 rounded-full transition-all text-gray-300 hover:text-white cursor-pointer">Yönetim</button>
+                <button onclick="showPage('kurallar')" id="nav-kurallar" class="nav-link px-3.5 py-2 rounded-full transition-all text-gray-300 hover:text-white cursor-pointer">Kurallar</button>
+            </nav>
+
+            <!-- Profil / Kredi Durumu (Sağ Üst) -->
+            <div class="hidden lg:flex items-center gap-3">
+                <div onclick="showPage('kredi')" class="px-4 py-2 rounded-xl bg-cardbg border border-cardborder flex items-center gap-2.5 cursor-pointer hover:border-accent transition-all">
+                    <i class="fa-solid fa-coins text-gold"></i>
+                    <div class="text-left">
+                        <span class="block text-[9px] text-gray-400 uppercase font-bold">Kredin</span>
+                        <span id="user-credits-header" class="text-xs font-mono font-black text-white">150 Kredi</span>
+                    </div>
+                </div>
+                <a href="https://discord.gg" target="_blank" class="w-10 h-10 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center shadow-lg shadow-indigo-600/25 transition-all">
+                    <i class="fa-brands fa-discord text-lg"></i>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" class="lg:hidden text-gray-300 text-xl focus:outline-none p-2.5 rounded-xl bg-cardbg border border-cardborder cursor-pointer">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-cardbg/98 backdrop-blur-2xl border-b border-gray-800 px-6 py-6 flex flex-col gap-3">
+            <button onclick="showPage('anasayfa'); closeMobileMenu();" class="text-left text-gray-300 hover:text-accent font-medium py-2">Ana Sayfa</button>
+            <button onclick="showPage('magaza'); closeMobileMenu();" class="text-left text-gray-300 hover:text-accent font-medium py-2">Mağaza</button>
+            <button onclick="showPage('kredi'); closeMobileMenu();" class="text-left text-gray-300 hover:text-accent font-medium py-2">Kredi & Sandık Sistemi</button>
+            <button onclick="showPage('destek'); closeMobileMenu();" class="text-left text-gray-300 hover:text-accent font-medium py-2">Destek Talebi</button>
+            <button onclick="showPage('ekip'); closeMobileMenu();" class="text-left text-gray-300 hover:text-accent font-medium py-2">Yönetim Kadrosu</button>
+            <button onclick="showPage('kurallar'); closeMobileMenu();" class="text-left text-gray-300 hover:text-accent font-medium py-2">Kurallar</button>
+        </div>
+    </header>
+
+    <!-- 3. CANLI SON ALIŞVERİŞLER TICKER (Kayan Duyuru Şeridi) -->
+    <div class="bg-cardbg border-b border-cardborder py-2.5 overflow-hidden whitespace-nowrap relative z-30">
+        <div class="inline-flex animate-marquee items-center gap-12 text-xs text-gray-300 font-medium">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-cart-shopping text-accent"></i> <strong class="text-white">Player_99</strong> VIP Üyelik satın aldı!</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-coins text-gold"></i> <strong class="text-white">X_Pro_TR</strong> 500 Kredi yükledi!</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-gift text-neon"></i> <strong class="text-white">NoyanFan</strong> CVIP paketini sandığına ekledi!</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-shield text-indigo-400"></i> <strong class="text-white">CraftKing</strong> 1000 Kredi transfer etti!</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-cart-shopping text-accent"></i> <strong class="text-white">Berkay_S</strong> NOYAVIP Efsane aldı!</span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow">
+
+        <!-- ================= PAGE: ANA SAYFA ================= -->
+        <section id="page-anasayfa" class="page-content py-16 md:py-24 relative overflow-hidden">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-accent/15 blur-[180px] rounded-full pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-cardbg border border-cardborder text-xs font-medium text-gray-300 mb-6 shadow-sm">
+                        <span class="w-2.5 h-2.5 rounded-full bg-neon animate-pulse"></span>
+                        <span>SMP Sunucu | Kurucu: <strong class="text-white font-bold">7qraxxanw</strong></span>
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white mb-6 leading-[1.1]">
+                        Gerçek Survival <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-accent via-purple-400 to-indigo-400">SMP Deneyimi</span>
+                    </h1>
+                    <p class="text-gray-400 text-base md:text-lg mb-10 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
+                        Klanını kur, ekonomide dükkan aç, gelişmiş kredi ve sandık sistemleriyle dilediğin paketi arkadaşına hediye et veya dilediğin zaman aktif et!
+                    </p>
+
+                    <!-- IP Kopyalama & Kayıtlı Oyuncu Sayacı -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <button onclick="copyIP()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-cardbg border border-cardborder hover:border-accent transition-all flex items-center justify-between sm:justify-start gap-6 group cursor-pointer shadow-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center group-hover:rotate-12 transition-transform">
+                                    <i class="fa-solid fa-server"></i>
+                                </div>
+                                <div class="text-left">
+                                    <span class="block text-[10px] uppercase tracking-wider text-gray-400 font-bold">Sunucu IP</span>
+                                    <span id="server-ip" class="font-mono font-bold text-white text-sm">smp.craftnoyan.com</span>
+                                </div>
+                            </div>
+                            <span id="copy-text" class="text-xs font-semibold text-accent bg-accent/10 px-3.5 py-2 rounded-xl group-hover:bg-accent group-hover:text-white transition-all">Kopyala</span>
+                        </button>
+
+                        <div class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-cardbg border border-cardborder flex items-center gap-4 shadow-xl">
+                            <div class="w-10 h-10 rounded-xl bg-neon/10 text-neon flex items-center justify-center">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                            <div class="text-left">
+                                <span class="block text-[10px] text-gray-400 uppercase font-bold tracking-wider">Kayıtlı Oyuncu</span>
+                                <span class="font-mono font-black text-white text-sm">24,850+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sağ Kart -->
+                <div class="relative flex items-center justify-center">
+                    <div class="relative w-full max-w-md aspect-square rounded-3xl bg-gradient-to-br from-cardbg via-darkbg to-cardbg p-1 border border-cardborder shadow-2xl shadow-accent/10 animate-float">
+                        <div class="w-full h-full bg-cardbg/95 backdrop-blur-xl rounded-[22px] flex flex-col items-center justify-between p-8 text-center relative overflow-hidden border border-white/5">
+                            <div class="w-20 h-20 rounded-3xl bg-accent/10 border border-accent/30 text-accent flex items-center justify-center text-3xl shadow-xl">
+                                <i class="fa-solid fa-shield-cat animate-spin-slow"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-heading font-black text-3xl text-white tracking-wider mb-1">SMP NOYAN</h3>
+                                <p class="text-xs text-accent font-semibold tracking-widest uppercase mb-4">1.20 - 1.21 Sürüm Destekli</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 w-full">
+                                <div class="p-3 rounded-xl bg-darkbg border border-cardborder text-center">
+                                    <span class="block text-[10px] text-gray-400 uppercase font-bold">Aktif TPS</span>
+                                    <span class="text-xs font-bold text-neon mt-1 block">20.0 Tik</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-darkbg border border-cardborder text-center">
+                                    <span class="block text-[10px] text-gray-400 uppercase font-bold">Çevrimiçi</span>
+                                    <span class="text-xs font-bold text-white mt-1 block">312 Oyuncu</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE: MAĞAZA (Toplu Fiyatlar & 1₺ = 1 Kredi) ================= -->
+        <section id="page-magaza" class="page-content hidden py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <span class="text-accent font-semibold tracking-wider text-xs uppercase bg-accent/10 px-4 py-2 rounded-full border border-accent/20">Market & Sandık</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-white mt-4">Kredi ile Eşya & VIP Al</h2>
+                    <p class="text-gray-400 mt-3 text-sm">1 TL = 1 Kredi. 10 TL'den daha ekonomik toplu avantajlı paketleri inceleyin! Satın alınan ürünler direkt sandığınıza (envanterinize) düşer.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Ürün 1: VIP -->
+                    <div class="bg-cardbg rounded-3xl p-8 border border-cardborder hover:border-accent transition-all flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-accent/10 text-accent flex items-center justify-center text-2xl mb-6">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2 font-heading">VIP Üyelik (30 Gün)</h3>
+                            <p class="text-sm text-gray-400 mb-6 leading-relaxed">Uçuş yetkisi, renkli sohbet, günlük özel kit ve arsa koruması.</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between border-t border-cardborder pt-4 mb-6">
+                                <span class="text-xs text-gray-400">Fiyat:</span>
+                                <span class="text-2xl font-black text-gold font-mono">35 Kredi <span class="text-xs text-gray-500 font-normal">(35₺)</span></span>
+                            </div>
+                            <button onclick="buyWithCredits(35, 'VIP Üyelik (30 Gün)')" class="w-full py-3.5 rounded-xl bg-accent text-white font-bold hover:bg-accenthover transition-all cursor-pointer shadow-lg shadow-accent/20">Kredi ile Satın Al</button>
+                        </div>
+                    </div>
+
+                    <!-- Ürün 2: CVIP (Toplu İndirimli) -->
+                    <div class="bg-cardbg rounded-3xl p-8 border border-accent transition-all flex flex-col justify-between shadow-xl relative">
+                        <div class="absolute -top-3.5 right-6 bg-gradient-to-r from-accent to-purple-600 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow">Ekonomik Paket</div>
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-2xl mb-6">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2 font-heading">CVIP Üyelik (30 Gün)</h3>
+                            <p class="text-sm text-gray-400 mb-6 leading-relaxed">VIP özelliklerine ek olarak /workbench, /repair ve gelişmiş kitler.</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between border-t border-cardborder pt-4 mb-6">
+                                <span class="text-xs text-gray-400">Fiyat:</span>
+                                <span class="text-2xl font-black text-gold font-mono">65 Kredi <span class="text-xs text-gray-500 font-normal">(65₺ yerine)</span></span>
+                            </div>
+                            <button onclick="buyWithCredits(65, 'CVIP Üyelik (30 Gün)')" class="w-full py-3.5 rounded-xl bg-accent text-white font-bold hover:bg-accenthover transition-all cursor-pointer shadow-lg shadow-accent/20">Kredi ile Satın Al</button>
+                        </div>
+                    </div>
+
+                    <!-- Ürün 3: 1000 Kredi Paket (Toplu İndirimli) -->
+                    <div class="bg-cardbg rounded-3xl p-8 border border-cardborder hover:border-gold transition-all flex flex-col justify-between shadow-xl relative">
+                        <div class="absolute -top-3.5 right-6 bg-gradient-to-r from-amber-500 to-yellow-500 text-darkbg text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow">Süper Fırsat</div>
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-amber-500/10 text-gold flex items-center justify-center text-2xl mb-6">
+                                <i class="fa-solid fa-gem"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2 font-heading">MEGA Kredi Sandığı (1000 Kredi)</h3>
+                            <p class="text-sm text-gray-400 mb-6 leading-relaxed">Toplu alım avantajıyla 10 TL'den daha düşük birim maliyete sahip devasa kredi paketi!</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between border-t border-cardborder pt-4 mb-6">
+                                <span class="text-xs text-gray-400">Fiyat:</span>
+                                <span class="text-2xl font-black text-gold font-mono">800 Kredi <span class="text-xs text-neon font-bold">(İndirimli)</span></span>
+                            </div>
+                            <button onclick="buyWithCredits(800, 'MEGA Kredi Sandığı')" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-darkbg font-extrabold hover:brightness-110 transition-all cursor-pointer shadow-lg shadow-yellow-500/20">Kredi ile Satın Al</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE: KREDİ & SANDIK SİSTEMİ ================= -->
+        <section id="page-kredi" class="page-content hidden py-16 md:py-24">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <span class="text-accent font-semibold tracking-wider text-xs uppercase bg-accent/10 px-4 py-2 rounded-full border border-accent/20">Cüzdan & Sandık</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-white mt-4">Kredi İşlemleri & Sandık</h2>
+                    <p class="text-gray-400 mt-3 text-sm">Kredi satın al, arkadaşına kredi gönder veya marketten aldığın eşyaları sandığında (stacklenmiş olarak) saklayıp dilediğin zaman oyunda aktifleştir.</p>
+                </div>
+
+                <!-- Bakiye ve Transfer Paneli -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                    <!-- Mevcut Kredi Kartı -->
+                    <div class="bg-cardbg border border-cardborder p-8 rounded-3xl flex flex-col justify-between shadow-xl">
+                        <div>
+                            <span class="text-xs text-gray-400 uppercase font-bold tracking-wider">Cüzdan Durumu</span>
+                            <h3 class="text-3xl font-black text-white font-mono mt-2 mb-1" id="my-wallet-credits">150 Kredi</h3>
+                            <p class="text-xs text-neon font-medium"><i class="fa-solid fa-circle-check mr-1"></i> 1 TL = 1 Kredi Değeri</p>
+                        </div>
+                        <button onclick="openCreditDepositModal()" class="mt-8 w-full py-3 rounded-xl bg-accent hover:bg-accenthover text-white font-bold text-sm transition-all shadow-lg shadow-accent/20 cursor-pointer">
+                            <i class="fa-solid fa-plus-circle mr-2"></i> Kredi Yükle (Satın Al)
+                        </button>
+                    </div>
+
+                    <!-- Kredi Gönderme (Transfer) -->
+                    <div class="bg-cardbg border border-cardborder p-8 rounded-3xl lg:col-span-2 shadow-xl flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-heading font-bold text-white text-xl mb-4"><i class="fa-solid fa-right-left text-accent mr-2"></i> Arkadaşına Kredi Gönder</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Alıcı Oyuncu Adı</label>
+                                    <input type="text" id="transfer-username" placeholder="Örn: Player_99" class="w-full bg-darkbg border border-cardborder rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-accent">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Gönderilecek Miktar</label>
+                                    <input type="number" id="transfer-amount" placeholder="Örn: 50" class="w-full bg-darkbg border border-cardborder rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-accent font-mono">
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="sendCredits()" class="w-full py-3.5 rounded-xl bg-darkbg border border-accent text-accent hover:bg-accent hover:text-white font-bold text-sm transition-all cursor-pointer">
+                            Krediyi Transfer Et
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sandık (Envanter / Stack Sistemi) -->
+                <div class="bg-cardbg border border-cardborder p-8 rounded-3xl shadow-2xl">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-cardborder">
+                        <div>
+                            <h3 class="font-heading font-bold text-white text-xl"><i class="fa-solid fa-box-archive text-gold mr-2"></i> Web Sandığım (Envanter)</h3>
+                            <p class="text-xs text-gray-400 mt-1">Mağazadan aldığın VIP veya paketler burada birikir (stacklenir). İstediğin zaman "Oyuna Gönder" diyerek aktif edebilirsin.</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-gold/10 text-gold text-xs font-bold border border-gold/20" id="chest-count-badge">3 Öğe</span>
+                    </div>
+
+                    <div id="chest-items-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <!-- Öğe 1 -->
+                        <div class="bg-darkbg border border-cardborder p-5 rounded-2xl flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-accent/10 text-accent flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">VIP Üyelik</h4>
+                                    <span class="text-xs text-neon font-semibold font-mono">Stack: x2 Adet</span>
+                                </div>
+                            </div>
+                            <button onclick="claimChestItem('VIP Üyelik')" class="px-4 py-2 rounded-xl bg-accent hover:bg-accenthover text-white text-xs font-bold transition-all cursor-pointer shadow">Oyuna Gönder</button>
+                        </div>
+
+                        <!-- Öğe 2 -->
+                        <div class="bg-darkbg border border-cardborder p-5 rounded-2xl flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-crown"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">CVIP Üyelik</h4>
+                                    <span class="text-xs text-neon font-semibold font-mono">Stack: x1 Adet</span>
+                                </div>
+                            </div>
+                            <button onclick="claimChestItem('CVIP Üyelik')" class="px-4 py-2 rounded-xl bg-accent hover:bg-accenthover text-white text-xs font-bold transition-all cursor-pointer shadow">Oyuna Gönder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE: DESTEK TALEBİ & YARDIM ================= -->
+        <section id="page-destek" class="page-content hidden py-16 md:py-24">
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <span class="text-accent font-semibold tracking-wider text-xs uppercase bg-accent/10 px-4 py-2 rounded-full border border-accent/20">Yardım Merkezi</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-white mt-4">Destek Talebi & SSS</h2>
+                    <p class="text-gray-400 mt-3 text-sm">Takıldığın bir yer mi oldu? Yetkili kadromuz (<span class="text-white font-semibold">Vidraya, Venqz1, esnosta_, wennzy</span>) sorularını yanıtlamak için hazır.</p>
+                </div>
+
+                <!-- Talep Açma Formu -->
+                <div class="bg-cardbg border border-cardborder p-8 rounded-3xl shadow-2xl mb-12">
+                    <h3 class="font-heading font-bold text-white text-xl mb-6"><i class="fa-solid fa-headset text-accent mr-2"></i> Yeni Destek Talebi Oluştur</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Minecraft Adın</label>
+                            <input type="text" id="ticket-username" placeholder="Örn: 7qraxxanw" class="w-full bg-darkbg border border-cardborder rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-accent">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Konu Kategorisi</label>
+                            <select id="ticket-category" class="w-full bg-darkbg border border-cardborder rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-accent cursor-pointer">
+                                <option value="kredi">Kredi / Mağaza Sorunu</option>
+                                <option value="bug">Hata / Bug Bildirimi</option>
+                                <option value="oyuncu">Oyuncu Şikayet / Destek</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Sorunun Açıklaması</label>
+                        <textarea id="ticket-desc" rows="4" placeholder="Yaşadığınız sorunu detaylıca yazınız..." class="w-full bg-darkbg border border-cardborder rounded-xl p-4 text-white text-sm focus:outline-none focus:border-accent"></textarea>
+                    </div>
+                    <button onclick="submitTicket()" class="w-full py-3.5 rounded-xl bg-accent hover:bg-accenthover text-white font-bold text-sm transition-all cursor-pointer shadow-lg shadow-accent/20">
+                        Destek Talebini Gönder
+                    </button>
+                </div>
+
+                <!-- Sık Sorulan Sorular (SSS) -->
+                <div class="space-y-4">
+                    <div class="p-6 rounded-2xl bg-cardbg border border-cardborder">
+                        <h4 class="font-bold text-white text-base mb-2">Kredi aldığımda eşyam nereye gider?</h4>
+                        <p class="text-sm text-gray-400">Mağazadan aldığın ürünler direkt olarak web sandığına (envanterine) düşer. Oradan dilediğin zaman oyuna aktarabilirsin.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-cardbg border border-cardborder">
+                        <h4 class="font-bold text-white text-base mb-2">Kredimi başkasına gönderebilir miyim?</h4>
+                        <p class="text-sm text-gray-400">Evet, üst menüdeki "Kredi & Sandık" sekmesinden arkadaşının kullanıcı adını yazarak dilediğin miktarda krediyi transfer edebilirsin.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE: YÖNETİM KADROSU ================= -->
+        <section id="page-ekip" class="page-content hidden py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <span class="text-accent font-semibold tracking-wider text-xs uppercase bg-accent/10 px-4 py-2 rounded-full border border-accent/20">Yetkili Ekip</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-white mt-4">Yönetim Kadrosu</h2>
+                    <p class="text-gray-400 mt-3 text-sm">Sunucumuzun kurucusu ve profesyonel kadrosu.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Kurucu: 7qraxxanw -->
+                    <div class="bg-cardbg rounded-3xl p-8 border border-accent text-center relative shadow-xl group">
+                        <div class="absolute -top-3.5 right-6 bg-gradient-to-r from-accent to-purple-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full">Kurucu</div>
+                        <div class="w-24 h-24 mx-auto rounded-3xl bg-accent/20 border border-accent/40 text-accent flex items-center justify-center text-4xl mb-6 group-hover:scale-105 transition-transform">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-1">7qraxxanw</h3>
+                        <p class="text-xs text-accent font-semibold uppercase tracking-wider mb-4">Sunucu Sahibi</p>
+                        <p class="text-xs text-gray-400">Craft Noyan SMP projesinin kurucusu ve mimarı.</p>
+                    </div>
+
+                    <!-- Admin: Vidraya -->
+                    <div class="bg-cardbg rounded-3xl p-8 border border-cardborder text-center relative shadow-xl group">
+                        <div class="absolute -top-3.5 right-6 bg-gradient-to-r from-red-500 to-rose-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full">Admin</div>
+                        <div class="w-24 h-24 mx-auto rounded-3xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center text-4xl mb-6 group-hover:scale-105 transition-transform">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-1">Vidraya</h3>
+                        <p class="text-xs text-red-400 font-semibold uppercase tracking-wider mb-4">Sunucu Admini</p>
+                        <p class="text-xs text-gray-400">Genel yönetim, yetkili koordinasyonu ve denetim.</p>
+                    </div>
+
+                    <!-- Moderatör: Venqz1 -->
+                    <div class="bg-cardbg rounded-3xl p-8 border border-cardborder text-center relative shadow-xl group">
+                        <div class="absolute -top-3.5 right-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full">Moderatör</div>
+                        <div class="w-24 h-24 mx-auto rounded-3xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-4xl mb-6 group-hover:scale-105 transition-transform">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-1">Venqz1</h3>
+                        <p class="text-xs text-blue-400 font-semibold uppercase tracking-wider mb-4">Moderatör</p>
+                        <p class="text-xs text-gray-400">Sohbet güvenliği, düzen ve oyuncu ilişkileri sorumlusu.</p>
+                    </div>
+
+                    <!-- Asistan: esnosta_ -->
+                    <div class="bg-cardbg rounded-3xl p-8 border border-cardborder text-center relative shadow-xl group">
+                        <div class="absolute -top-3.5 right-6 bg-gradient-to-r from-amber-500 to-yellow-600 text-darkbg text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full">Asistan</div>
+                        <div class="w-24 h-24 mx-auto rounded-3xl bg-yellow-500/10 border border-yellow-500/20 text-gold flex items-center justify-center text-4xl mb-6 group-hover:scale-105 transition-transform">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-1">esnosta_</h3>
+                        <p class="text-xs text-gold font-semibold uppercase tracking-wider mb-4">Asistan</p>
+                        <p class="text-xs text-gray-400">Destek talepleri ve oyuncu sorunlarının çözümünde aktif.</p>
+                    </div>
+
+                    <!-- Rehber: wennzy -->
+                    <div class="bg-cardbg rounded-3xl p-8 border border-cardborder text-center relative shadow-xl group sm:col-span-2 lg:col-span-1">
+                        <div class="absolute -top-3.5 right-6 bg-gradient-to-r from-neon to-emerald-600 text-darkbg text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full">Rehber</div>
+                        <div class="w-24 h-24 mx-auto rounded-3xl bg-neon/10 border border-neon/20 text-neon flex items-center justify-center text-4xl mb-6 group-hover:scale-105 transition-transform">
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-1">wennzy</h3>
+                        <p class="text-xs text-neon font-semibold uppercase tracking-wider mb-4">Rehber</p>
+                        <p class="text-xs text-gray-400">Yeni oyunculara rehberlik eder ve sunucu içi bilgi sağlar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE: KURALLAR ================= -->
+        <section id="page-kurallar" class="page-content hidden py-16 md:py-24">
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <span class="text-accent font-semibold tracking-wider text-xs uppercase bg-accent/10 px-4 py-2 rounded-full border border-accent/20">Güvenli Oyun</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-white mt-4">Sunucu Kuralları</h2>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-6 rounded-2xl bg-cardbg border border-cardborder flex items-start gap-5">
+                        <span class="w-11 h-11 rounded-xl bg-accent/10 text-accent font-black flex items-center justify-center shrink-0 font-mono">01</span>
+                        <div>
+                            <h4 class="font-bold text-white text-base mb-1">Hile Kullanımı Kesinlikle Yasaktır</h4>
+                            <p class="text-sm text-gray-400">Xray, kill aura ve benzeri her türlü 3. parti yazılım süresiz ban sebebidir.</p>
+                        </div>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-cardbg border border-cardborder flex items-start gap-5">
+                        <span class="w-11 h-11 rounded-xl bg-accent/10 text-accent font-black flex items-center justify-center shrink-0 font-mono">02</span>
+                        <div>
+                            <h4 class="font-bold text-white text-base mb-1">Küfür, Hakaret ve Taciz Yasaktır</h4>
+                            <p class="text-sm text-gray-400">Sohbet penceresinde diğer oyuncuları rahatsız etmek ceza gerektirir.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-cardbg border-t border-cardborder py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-lg bg-accent/20 text-accent flex items-center justify-center font-bold text-xs">CN</span>
+                <span class="font-heading font-black tracking-wider text-white">CRAFT NOYAN</span>
+            </div>
+            <p class="text-xs text-gray-500 text-center md:text-left">
+                &copy; 2026 Craft Noyan. Kurucu: <span class="text-gray-300 font-semibold">7qraxxanw</span>. Tüm hakları saklıdır.
+            </p>
+            <div class="flex items-center gap-3">
+                <a href="https://discord.gg" target="_blank" class="w-10 h-10 rounded-xl bg-darkbg border border-cardborder flex items-center justify-center text-gray-300 hover:text-white hover:bg-indigo-600 transition-all"><i class="fa-brands fa-discord"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- KREDİ YÜKLEME MODALI -->
+    <div id="deposit-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center px-4">
+        <div class="bg-cardbg border border-cardborder rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl relative">
+            <button onclick="closeDepositModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white text-lg cursor-pointer w-8 h-8 rounded-full bg-darkbg border border-cardborder flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-heading text-2xl font-black text-white mb-1">Kredi Yükle</h3>
+            <p class="text-xs text-accent font-semibold mb-6 uppercase tracking-wider">1 TL = 1 Kredi</p>
+            
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Yüklenecek Tutar (TL / Kredi)</label>
+                    <input type="number" id="deposit-amount" value="50" class="w-full bg-darkbg border border-cardborder rounded-xl px-4 py-3 text-white font-mono focus:outline-none focus:border-accent text-sm">
+                </div>
+            </div>
+
+            <button onclick="processDeposit()" class="w-full py-3.5 rounded-xl bg-accent hover:bg-accenthover text-white font-bold shadow-lg shadow-accent/35 transition-all text-sm cursor-pointer">
+                Ödemeyi Tamamla ve Kredi Yükle
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPTS & INTERACTION LOGIC -->
+    <script>
+        // Kullanıcı simülasyon state'leri
+        let userCredits = 150;
+        let userChest = [
+            { name: 'VIP Üyelik', count: 2 },
+            { name: 'CVIP Üyelik', count: 1 }
+        ];
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.add('hidden');
+            });
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('text-accent', 'bg-cardbg', 'border', 'border-cardborder', 'font-semibold', 'shadow-sm');
+                link.classList.add('text-gray-300');
+            });
+            
+            const activeNav = document.getElementById('nav-' + pageId);
+            if(activeNav) {
+                activeNav.classList.remove('text-gray-300');
+                activeNav.classList.add('text-accent', 'bg-cardbg', 'border', 'border-cardborder', 'font-semibold', 'shadow-sm');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function copyIP() {
+            navigator.clipboard.writeText("smp.craftnoyan.com");
+            const copyBtnText = document.getElementById('copy-text');
+            copyBtnText.innerText = "Kopyalandı!";
+            setTimeout(() => { copyBtnText.innerText = "Kopyala"; }, 2000);
+        }
+
+        function updateWalletUI() {
+            document.getElementById('user-credits-header').innerText = userCredits + " Kredi";
+            document.getElementById('my-wallet-credits').innerText = userCredits + " Kredi";
+        }
+
+        // Kredi ile Ürün Alma ve Sandığa Ekleme (Stackleme)
+        function buyWithCredits(price, productName) {
+            if(userCredits < price) {
+                alert("Yetersiz kredi! Lütfen cüzdanınıza kredi yükleyin.");
+                return;
+            }
+            userCredits -= price;
+            updateWalletUI();
+
+            // Sandıkta var mı kontrol et (Stackleme)
+            let existing = userChest.find(item => item.name === productName);
+            if(existing) {
+                existing.count += 1;
+            } else {
+                userChest.push({ name: productName, count: 1 });
+            }
+            renderChest();
+            alert(`Başarıyla "${productName}" satın alındı ve web sandığınıza eklendi!`);
+        }
+
+        // Sandığı Çiz ve Stackleri Göster
+        function renderChest() {
+            const container = document.getElementById('chest-items-container');
+            container.innerHTML = "";
+            let totalCount = 0;
+
+            userChest.forEach((item, index) => {
+                totalCount += item.count;
+                container.innerHTML += `
+                    <div class="bg-darkbg border border-cardborder p-5 rounded-2xl flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-accent/10 text-accent flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-gift"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">${item.name}</h4>
+                                <span class="text-xs text-neon font-semibold font-mono">Stack: x${item.count} Adet</span>
+                            </div>
+                        </div>
+                        <button onclick="claimChestItem('${item.name}')" class="px-4 py-2 rounded-xl bg-accent hover:bg-accenthover text-white text-xs font-bold transition-all cursor-pointer shadow">Oyuna Gönder</button>
+                    </div>
+                `;
+            });
+            document.getElementById('chest-count-badge').innerText = totalCount + " Öğe";
+        }
+
+        function claimChestItem(itemName) {
+            let item = userChest.find(i => i.name === itemName);
+            if(item && item.count > 0) {
+                item.count -= 1;
+                if(item.count === 0) {
+                    userChest = userChest.filter(i => i.name !== itemName);
+                }
+                renderChest();
+                alert(`"${itemName}" başarıyla aktif edilmek üzere sunucuya gönderildi! Oyuna girip kullanabilirsiniz.`);
+            }
+        }
+
+        // Kredi Transferi
+        function sendCredits() {
+            const receiver = document.getElementById('transfer-username').value;
+            const amount = parseInt(document.getElementById('transfer-amount').value);
+
+            if(!receiver || !amount || amount <= 0) {
+                alert("Lütfen geçerli bir alıcı adı ve miktar giriniz!");
+                return;
+            }
+            if(userCredits < amount) {
+                alert("Transfer etmek istediğiniz kadar krediniz bulunmuyor!");
+                return;
+            }
+
+            userCredits -= amount;
+            updateWalletUI();
+            document.getElementById('transfer-username').value = "";
+            document.getElementById('transfer-amount').value = "";
+            alert(`Başarıyla ${receiver} adlı oyuncuya ${amount} kredi transfer edildi!`);
+        }
+
+        // Kredi Yükleme Modalı
+        function openCreditDepositModal() {
+            document.getElementById('deposit-modal').classList.remove('hidden');
+            document.getElementById('deposit-modal').classList.add('flex');
+        }
+        function closeDepositModal() {
+            document.getElementById('deposit-modal').classList.add('hidden');
+            document.getElementById('deposit-modal').classList.remove('flex');
+        }
+        function processDeposit() {
+            const amt = parseInt(document.getElementById('deposit-amount').value);
+            if(!amt || amt <= 0) return;
+            userCredits += amt;
+            updateWalletUI();
+            closeDepositModal();
+            alert(`Başarıyla ${amt} TL ödeme yapılarak cüzdanınıza ${amt} kredi eklendi!`);
+        }
+
+        // Destek Talebi Gönderme
+        function submitTicket() {
+            const user = document.getElementById('ticket-username').value;
+            const desc = document.getElementById('ticket-desc').value;
+            if(!user || !desc) {
+                alert("Lütfen tüm alanları doldurunuz!");
+                return;
+            }
+            alert("Destek talebiniz başarıyla açıldı! Yetkili ekibimiz (Vidraya, Venqz1, esnosta_, wennzy) en kısa sürede inceleyecektir.");
+            document.getElementById('ticket-username').value = "";
+            document.getElementById('ticket-desc').value = "";
+        }
+
+        // Çoklu Dil Desteği Simülasyonu
+        function changeLanguage(lang) {
+            const banners = {
+                tr: "Craft Noyan v3.5 SMP Sezonu Aktif! Kurucu: 7qraxxanw",
+                en: "Craft Noyan v3.5 SMP Season is Live! Owner: 7qraxxanw",
+                de: "Craft Noyan v3.5 SMP Saison ist da! Gründer: 7qraxxanw",
+                az: "Craft Noyan v3.5 SMP Mövsümü Aktivdir! Qurucu: 7qraxxanw"
+            };
+            document.getElementById('txt-banner').innerHTML = banners[lang] || banners['tr'];
+        }
+
+        // Mobil Menü
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+        function closeMobileMenu() { mobileMenu.classList.add('hidden'); }
+    </script>
+</body>
+</html>
